@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tap_flutter_assignment/features/home/domain/entities/bond.dart';
 import 'package:tap_flutter_assignment/features/home/presentation/cubit/bond_cubit.dart';
 import 'package:tap_flutter_assignment/features/home/presentation/cubit/bond_list_state.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/pages/company_detail_page.dart';
 
 import '../widgets/bond_card.dart';
 
@@ -86,85 +87,80 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F5F7),
+      backgroundColor: Colors.grey.shade50,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'Home',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Inter",
-                  ),
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 20),
+          children: [
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'Home',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Inter",
                 ),
               ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  width: 350,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search by Issuer Name or ISIN',
-                      hintStyle: TextStyle(
-                        color: Colors.grey[500],
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[500],
-                        size: 14,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 16,
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                width: 350,
+                height: 42,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search by Issuer Name or ISIN',
+                    hintStyle: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey[500],
+                      size: 14,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  textAlign: TextAlign.start,
-                  _searchQuery.isNotEmpty
-                      ? 'SEARCH RESULTS'
-                      : 'SUGGESTED RESULTS',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[600],
-                    letterSpacing: 1.2,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
                   ),
                 ),
               ),
-              // Use BlocBuilder to listen to cubit state changes
-              BlocBuilder<BondCubit, BondListState>(
-                builder: (context, state) {
-                  return _buildBondsList(state);
-                },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                textAlign: TextAlign.start,
+                _searchQuery.isNotEmpty
+                    ? 'SEARCH RESULTS'
+                    : 'SUGGESTED RESULTS',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[600],
+                  letterSpacing: 1.2,
+                ),
               ),
-            ],
-          ),
+            ),
+            BlocBuilder<BondCubit, BondListState>(
+              builder: (context, state) => _buildBondsList(state),
+            ),
+          ],
         ),
       ),
     );
@@ -217,15 +213,18 @@ class _HomePageState extends State<HomePage> {
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
             itemCount: bondsToShow.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final bond = bondsToShow[index];
               return SearchableBondCard(
                 bond: bond,
                 searchQuery: _searchQuery,
                 onTap: () {
-                  print('Selected: ${bond.companyName}');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BondDetailPage(bondId: bond.isin),
+                    ),
+                  );
                 },
               );
             },
