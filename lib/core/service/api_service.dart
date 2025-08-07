@@ -12,9 +12,10 @@ class ApiService {
   final Dio _dio;
 
   static const String _baseUrl = 'https://eol122duf9sy4de.m.pipedream.net';
+  static const String _detailBaseUrl =
+      'https://eo61q3zd4heiwke.m.pipedream.net';
 
   ApiService(this._dio) {
-    // Configure Dio with default options
     _dio.options = BaseOptions(
       baseUrl: _baseUrl,
       headers: {
@@ -53,6 +54,26 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error fetching bond lists: $e');
+    }
+  }
+
+  Future<BondDetail> getBondDetails() async {
+    try {
+      // Temporarily override baseUrl
+      final response = await _dio.get(
+        '$_detailBaseUrl/#',
+        options: Options(
+          // You can override headers or timeouts here if needed
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      return BondDetail.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception('Error fetching bond detail: ${e.message}');
     }
   }
 }
