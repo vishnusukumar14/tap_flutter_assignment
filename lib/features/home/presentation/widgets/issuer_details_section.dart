@@ -9,10 +9,7 @@ class IssuerDetailsSection extends StatelessWidget {
 
   Widget _buildDetailItem(String label, String value) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,16 +17,16 @@ class IssuerDetailsSection extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey[600],
+              color: Colors.blue[700],
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.black,
+              color: Colors.grey[900],
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -43,19 +40,28 @@ class IssuerDetailsSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Card(
+        elevation: 0,
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Colors.grey.shade300, width: 0.5),
+          side: BorderSide(color: Colors.grey.shade200, width: 1),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                top: 16.0,
+              ),
+              child: Row(
                 children: [
-                  Icon(Icons.business, size: 20, color: Colors.grey[600]),
+                  Icon(
+                    Icons.contact_page,
+                    size: 20,
+                    color: Colors.grey[600],
+                  ), //todo
                   const SizedBox(width: 8),
                   Text(
                     'Issuer Details',
@@ -67,34 +73,37 @@ class IssuerDetailsSection extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              _buildDetailItem(
-                'Issuer Name',
-                bondDetail.issuerDetails.issuerName,
-              ),
-              _buildDetailItem(
-                'Type of Issuer',
-                bondDetail.issuerDetails.typeOfIssuer,
-              ),
-              _buildDetailItem('Non PSU', 'Non PSU'),
-              _buildDetailItem('Sector', bondDetail.issuerDetails.sector),
-              _buildDetailItem('Industry', bondDetail.issuerDetails.industry),
-              _buildDetailItem(
-                'Issuer Nature',
-                bondDetail.issuerDetails.issuerNature,
-              ),
-              _buildDetailItem('CIN', bondDetail.issuerDetails.cin),
-              _buildDetailItem(
-                'Name of the Lead Manager',
-                bondDetail.issuerDetails.leadManager,
-              ),
-              _buildDetailItem('Registrar', bondDetail.issuerDetails.registrar),
-              _buildDetailItem(
-                'Name of Debenture Trustee',
-                bondDetail.issuerDetails.debentureTrustee,
-              ),
-            ],
-          ),
+            ),
+            Divider(thickness: 0.8),
+            const SizedBox(height: 16),
+            _buildDetailItem(
+              'Issuer Name',
+              bondDetail.issuerDetails.issuerName,
+            ),
+            _buildDetailItem(
+              'Type of Issuer',
+              bondDetail.issuerDetails.typeOfIssuer,
+            ),
+            _buildDetailItem('Sector', bondDetail.issuerDetails.sector),
+            _buildDetailItem('Industry', bondDetail.issuerDetails.industry),
+            _buildDetailItem(
+              'Issuer Nature',
+              bondDetail.issuerDetails.issuerNature,
+            ),
+            _buildDetailItem(
+              'Corporate Identity Number (CIN)',
+              bondDetail.issuerDetails.cin,
+            ),
+            _buildDetailItem(
+              'Name of the Lead Manager',
+              bondDetail.issuerDetails.leadManager,
+            ),
+            _buildDetailItem('Registrar', bondDetail.issuerDetails.registrar),
+            _buildDetailItem(
+              'Name of Debenture Trustee',
+              bondDetail.issuerDetails.debentureTrustee,
+            ),
+          ],
         ),
       ),
     );
