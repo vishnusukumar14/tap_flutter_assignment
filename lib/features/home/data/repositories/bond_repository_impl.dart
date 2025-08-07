@@ -15,4 +15,9 @@ class CompanyRepositoryImpl implements BondRepository {
   Future<List<Bond>> getCompanies() async {
     return await _apiService.getCompanies();
   }
+
+  @override
+  Future<BondDetail> getCompanyDetail() async {
+    return await _apiService.getBondDetails();
+  }
 }
