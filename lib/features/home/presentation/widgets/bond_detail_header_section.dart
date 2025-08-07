@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/bond_detail.dart';
-import 'company_financial_section_widget.dart';
 import 'issuer_details_section.dart';
 
 class BondDetailHeaderSection extends StatefulWidget {
@@ -22,6 +21,9 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {}); // Rebuild when tab changes
+    });
   }
 
   @override
@@ -32,15 +34,15 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _buildCompanyHeader(),
-          SizedBox(height: 12),
-          _buildTabSection(),
-          _buildContent(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildCompanyHeader(),
+        SizedBox(height: 12),
+        _buildTabSection(),
+        SizedBox(height: 12),
+        _buildSelectedTabContent(),
+      ],
     );
   }
 
@@ -63,10 +65,18 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.network(widget.bondDetail.logo, fit: BoxFit.cover),
+              child: Image.network(
+                widget.bondDetail.logo,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey[200],
+                    child: Icon(Icons.business, color: Colors.grey[400]),
+                  );
+                },
+              ),
             ),
           ),
-
           const SizedBox(height: 18),
           Text(
             widget.bondDetail.companyName,
@@ -87,7 +97,9 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
             ),
           ),
           const SizedBox(height: 16),
-          Row(
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -107,7 +119,6 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -135,37 +146,28 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
 
   Widget _buildTabSection() {
     return Container(
-      // width: double.,
-      // width: double.infinity,
-      // color: Colors.white,
-      alignment: Alignment.centerLeft,
+      color: Colors.white,
       child: TabBar(
         isScrollable: true,
         tabAlignment: TabAlignment.start,
         controller: _tabController,
-        // labelPadding: EdgeInsets.symmetric(
-        //   horizontal: 20,
-        // ), // spacing between tabs// spacing between tabs
         indicatorColor: Colors.blue.shade800,
         indicatorWeight: 3,
         labelColor: Colors.blue.shade700,
         unselectedLabelColor: Colors.grey.shade600,
         labelStyle: const TextStyle(fontWeight: FontWeight.w600),
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         tabs: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
+          Tab(
             child: Text(
               'ISIN Analysis',
-              textAlign: TextAlign.start,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
+          Tab(
             child: Text(
               "Pros & Cons",
-              textAlign: TextAlign.start,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
             ),
           ),
@@ -174,26 +176,90 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
     );
   }
 
-  Widget _buildContent() {
-    return SizedBox(
-      child: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildISINAnalysisTab(),
-          Center(child: Text('Pros & Cons Coming Soon')),
-        ],
-      ),
-    );
+  Widget _buildSelectedTabContent() {
+    switch (_tabController.index) {
+      case 0:
+        return _buildISINAnalysisTab();
+      case 1:
+        return _buildProsConsTab();
+      default:
+        return _buildISINAnalysisTab();
+    }
   }
 
   Widget _buildISINAnalysisTab() {
     return Column(
       children: [
-        // CompanyFinancialsSection(bondDetail: widget.bondDetail),
-        Placeholder(),
+        // Placeholder for CompanyFinancialsSection
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          height: 200,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.analytics, size: 48, color: Colors.grey[400]),
+                SizedBox(height: 8),
+                Text(
+                  'Financial Section',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'Coming Soon',
+                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(height: 20),
         IssuerDetailsSection(bondDetail: widget.bondDetail),
+        const SizedBox(height: 20), // Bottom padding
       ],
+    );
+  }
+
+  Widget _buildProsConsTab() {
+    return Container(
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.balance, size: 64, color: Colors.grey[400]),
+            SizedBox(height: 16),
+            Text(
+              'Pros & Cons Analysis',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'This feature is coming soon',
+              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

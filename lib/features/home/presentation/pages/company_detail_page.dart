@@ -31,7 +31,6 @@ class BondDetailView extends StatelessWidget {
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         title: const Text(''),
-        // backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -83,15 +82,26 @@ class BondDetailView extends StatelessWidget {
         children: [
           if (state is BondDetailRefreshing)
             const LinearProgressIndicator(minHeight: 2),
-          Expanded(child: BondDetailHeaderSection(bondDetail: bondDetail)),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: BondDetailHeaderSection(bondDetail: bondDetail),
+            ),
+          ),
         ],
       );
     }
 
     if (state is BondDetailError) {
-      return CustomErrorWidget(
-        error: state.message,
-        onRetry: () => context.read<BondDetailCubit>().loadBondDetail(),
+      return SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - 200,
+          child: CustomErrorWidget(
+            error: state.message,
+            onRetry: () => context.read<BondDetailCubit>().loadBondDetail(),
+          ),
+        ),
       );
     }
 

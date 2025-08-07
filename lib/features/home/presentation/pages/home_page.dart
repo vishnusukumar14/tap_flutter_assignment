@@ -89,9 +89,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.only(bottom: 20),
+        child: Column(
           children: [
+            // Fixed header section
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -157,8 +157,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            BlocBuilder<BondCubit, BondListState>(
-              builder: (context, state) => _buildBondsList(state),
+            // Scrollable content section
+            Expanded(
+              child: BlocBuilder<BondCubit, BondListState>(
+                builder: (context, state) => _buildBondsList(state),
+              ),
             ),
           ],
         ),
@@ -169,12 +172,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBondsList(BondListState state) {
     // Handle loading state
     if (state is BondListLoading) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(50.0),
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     // Handle error state
@@ -193,12 +191,9 @@ class _HomePageState extends State<HomePage> {
 
       if (bondsToShow.isEmpty) {
         return const Center(
-          child: Padding(
-            padding: EdgeInsets.all(50.0),
-            child: Text(
-              'No bonds available',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
+          child: Text(
+            'No bonds available',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         );
       }
@@ -239,75 +234,66 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildEmptySearchState() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
-            Text(
-              'No results found',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+          const SizedBox(height: 16),
+          Text(
+            'No results found',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Try adjusting your search terms',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Try adjusting your search terms',
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildErrorState(String message) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, size: 64, color: Colors.red[400]),
-            const SizedBox(height: 16),
-            Text(
-              'Something went wrong',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, size: 64, color: Colors.red[400]),
+          const SizedBox(height: 16),
+          Text(
+            'Something went wrong',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            message,
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              context.read<BondCubit>().loadBonds();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF007AFF),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.read<BondCubit>().loadBonds();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF007AFF),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
+            child: const Text('Retry'),
+          ),
+        ],
       ),
     );
   }
