@@ -30,7 +30,7 @@ extension GetItInjectableX on _i174.GetIt {
     final dioModule = _$DioModule();
     gh.lazySingleton<_i361.Dio>(() => dioModule.dio);
     gh.factory<_i906.ApiService>(() => _i906.ApiService(gh<_i361.Dio>()));
-    gh.lazySingleton<_i133.BondRepository>(
+    gh.factory<_i133.BondRepository>(
       () => _i447.CompanyRepositoryImpl(gh<_i906.ApiService>()),
     );
     gh.factory<_i172.BondCubit>(
