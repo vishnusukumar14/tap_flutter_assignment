@@ -26,7 +26,6 @@ class ApiService {
       sendTimeout: const Duration(seconds: 30),
     );
 
-    // Add interceptors if needed
     _dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
@@ -42,20 +41,18 @@ class ApiService {
 
   Future<List<Bond>> getCompanies() async {
     try {
-      final response = await _dio.get('/companies');
+      final response = await _dio.get('/#');
 
       final List<dynamic> companiesJson = response.data['data'];
       return companiesJson.map((json) => Bond.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null) {
-        throw HttpException(
-          'Failed to load companies: ${e.response!.statusCode}',
-        );
+        throw HttpException('Failed to load bonds: ${e.response!.statusCode}');
       } else {
-        throw Exception('Error fetching companies: ${e.message}');
+        throw Exception('Error fetching bond lists: ${e.message}');
       }
     } catch (e) {
-      throw Exception('Error fetching companies: $e');
+      throw Exception('Error fetching bond lists: $e');
     }
   }
 }
