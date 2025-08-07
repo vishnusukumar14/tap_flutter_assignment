@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../domain/entities/bond_detail.dart';
 
@@ -58,17 +59,17 @@ class IssuerDetailsSection extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    Icons.contact_page,
+                    FontAwesomeIcons.addressBook,
                     size: 20,
                     color: Colors.grey[600],
-                  ), //todo
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Issuer Details',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF020617),
                     ),
                   ),
                 ],

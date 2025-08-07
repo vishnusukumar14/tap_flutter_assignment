@@ -90,8 +90,9 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.grey.shade50,
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Fixed header section
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -99,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                 'Home',
                 style: TextStyle(
                   fontSize: 26,
+                  letterSpacing: -0.78,
                   fontWeight: FontWeight.w600,
                   fontFamily: "Inter",
                 ),
@@ -111,8 +113,9 @@ class _HomePageState extends State<HomePage> {
                 width: 350,
                 height: 42,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
                   color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade200, width: 1),
                 ),
                 child: TextField(
                   controller: _searchController,
@@ -158,11 +161,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // Scrollable content section
-            Expanded(
+            SizedBox(
+              height: 216,
               child: BlocBuilder<BondCubit, BondListState>(
                 builder: (context, state) => _buildBondsList(state),
               ),
             ),
+            SizedBox(height: 4),
           ],
         ),
       ),
@@ -203,7 +208,8 @@ class _HomePageState extends State<HomePage> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey.shade200, width: 1),
           ),
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),

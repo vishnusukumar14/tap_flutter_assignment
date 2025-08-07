@@ -38,16 +38,7 @@ class BondDetailView extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<BondDetailCubit, BondDetailState>(
-        listener: (context, state) {
-          if (state is BondDetailRefreshing) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Refreshing bond details...'),
-                duration: Duration(seconds: 1),
-              ),
-            );
-          }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           return RefreshIndicator(
             onRefresh: () =>
@@ -80,8 +71,6 @@ class BondDetailView extends StatelessWidget {
 
       return Column(
         children: [
-          if (state is BondDetailRefreshing)
-            const LinearProgressIndicator(minHeight: 2),
           Expanded(
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),

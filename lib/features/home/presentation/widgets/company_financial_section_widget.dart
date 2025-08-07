@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/bond_detail.dart';
+import 'financial_toggle_switch.dart';
 
 class CompanyFinancialsSection extends StatefulWidget {
   final BondDetail bondDetail;
@@ -46,12 +47,14 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                       letterSpacing: 0.8,
                     ),
                   ),
-                  Row(
-                    children: [
-                      _buildToggleButton('EBITDA', !showRevenue),
-                      const SizedBox(width: 8),
-                      _buildToggleButton('Revenue', showRevenue),
-                    ],
+
+                  FinancialToggleSwitch(
+                    initialShowRevenue: false,
+                    onChanged: (bool isRevenue) {
+                      setState(() {
+                        showRevenue = isRevenue;
+                      });
+                    },
                   ),
                 ],
               ),

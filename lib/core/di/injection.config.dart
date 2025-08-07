@@ -17,6 +17,7 @@ import '../../features/home/data/repositories/bond_repository_impl.dart'
     as _i447;
 import '../../features/home/domain/repositories/bond_repository.dart' as _i133;
 import '../../features/home/presentation/cubit/bond_cubit.dart' as _i172;
+import '../../features/home/presentation/cubit/bond_detail_cubit.dart' as _i962;
 import '../service/api_service.dart' as _i906;
 import 'dio_module.dart' as _i1045;
 
@@ -35,6 +36,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i172.BondCubit>(
       () => _i172.BondCubit(gh<_i133.BondRepository>()),
+    );
+    gh.factory<_i962.BondDetailCubit>(
+      () => _i962.BondDetailCubit(gh<_i133.BondRepository>()),
     );
     return this;
   }
