@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/widgets/company_financial_section_widget.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/widgets/pros_and_cons_section.dart';
 
 import '../../domain/entities/bond_detail.dart';
 import 'issuer_details_section.dart';
@@ -49,7 +51,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
   Widget _buildCompanyHeader() {
     return Container(
       width: double.infinity,
-      color: Colors.white,
+      // color: Colors.white,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +61,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
             height: 60,
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.white,
+              // color: Colors.white,
               border: Border.all(color: Colors.grey.shade200),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -145,34 +147,31 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
   }
 
   Widget _buildTabSection() {
-    return Container(
-      color: Colors.white,
-      child: TabBar(
-        isScrollable: true,
-        tabAlignment: TabAlignment.start,
-        controller: _tabController,
-        indicatorColor: Colors.blue.shade800,
-        indicatorWeight: 3,
-        labelColor: Colors.blue.shade700,
-        unselectedLabelColor: Colors.grey.shade600,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w600),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        tabs: const [
-          Tab(
-            child: Text(
-              'ISIN Analysis',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
+    return TabBar(
+      isScrollable: true,
+      tabAlignment: TabAlignment.start,
+      controller: _tabController,
+      indicatorColor: Colors.blue.shade800,
+      indicatorWeight: 3,
+      labelColor: Colors.blue.shade700,
+      unselectedLabelColor: Colors.grey.shade600,
+      labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+      unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      tabs: const [
+        Tab(
+          child: Text(
+            'ISIN Analysis',
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
           ),
-          Tab(
-            child: Text(
-              "Pros & Cons",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
+        ),
+        Tab(
+          child: Text(
+            "Pros & Cons",
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -181,7 +180,10 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
       case 0:
         return _buildISINAnalysisTab();
       case 1:
-        return _buildProsConsTab();
+        return ProsAndConsSection(
+          pros: widget.bondDetail.prosAndCons.pros,
+          cons: widget.bondDetail.prosAndCons.cons,
+        );
       default:
         return _buildISINAnalysisTab();
     }
@@ -190,76 +192,11 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
   Widget _buildISINAnalysisTab() {
     return Column(
       children: [
-        // Placeholder for CompanyFinancialsSection
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.analytics, size: 48, color: Colors.grey[400]),
-                SizedBox(height: 8),
-                Text(
-                  'Financial Section',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  'Coming Soon',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
+        CompanyFinancialsSection(bondDetail: widget.bondDetail),
+        const SizedBox(height: 24),
         IssuerDetailsSection(bondDetail: widget.bondDetail),
-        const SizedBox(height: 20), // Bottom padding
+        const SizedBox(height: 20),
       ],
-    );
-  }
-
-  Widget _buildProsConsTab() {
-    return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(40),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.balance, size: 64, color: Colors.grey[400]),
-            SizedBox(height: 16),
-            Text(
-              'Pros & Cons Analysis',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'This feature is coming soon',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

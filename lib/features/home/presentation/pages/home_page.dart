@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[600],
-                  letterSpacing: 1.2,
+                  letterSpacing: 0.8,
                 ),
               ),
             ),
