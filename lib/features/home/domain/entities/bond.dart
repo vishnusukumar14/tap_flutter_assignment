@@ -9,7 +9,7 @@ class Bond with _$Bond {
     required String logo,
     required String isin,
     required String rating,
-    required String companyName,
+    @JsonKey(name: 'company_name') required String companyName,
     required List<String> tags,
   }) = _Bond;
 
