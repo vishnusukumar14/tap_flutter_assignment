@@ -1,0 +1,86 @@
+permissions:
+  contents: write
+
+name: "Build & Release APK"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Build & Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17.0.12'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.32.6'
+          architecture: x64
+          cache: true
+
+      - name: Cache Flutter SDK & Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ${{ runner.tool_cache }}/flutter
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+            ${{ runner.os }}-flutter-
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
+
+      - name: Cache Dart Tool (optional for build_runner)
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/
+          key: ${{ runner.os }}-darttool-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-darttool-
+
+      - name: Run build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Accept Android Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Build Android APK (Release, Split per ABI)
+        run: flutter build apk --release --obfuscate --split-debug-info=debug_info/ --tree-shake-icons --split-per-abi
+
+      - name: Generate Version with Timestamp
+        id: version
+        run: |
+          BASE_VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d+ -f1)
+          TIMESTAMP=$(date +%s)
+          echo "VERSION=${BASE_VERSION}+${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "Using version: ${BASE_VERSION}+${TIMESTAMP}"
+
+      - name: Upload Android APK Build Artifacts to GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/app/outputs/apk/release/*.apk
+          tag: v${{ steps.version.outputs.VERSION }}
+          token: ${{ secrets.TOKEN }}
+          allowUpdates: true
