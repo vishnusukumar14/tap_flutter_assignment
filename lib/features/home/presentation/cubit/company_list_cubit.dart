@@ -20,11 +20,4 @@ class CompanyListCubit extends Cubit<CompanyListState> {
       emit(CompanyListState.error(e.toString()));
     }
   }
-
-  // void clearSelection() {
-  //   if (state is CompanyListLoaded) {
-  //     final currentState = state as CompanyListLoaded;
-  //     // emit(currentState.copyWith(selectedCompany: null));
-  //   }
-  // }
 }

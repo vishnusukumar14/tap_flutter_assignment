@@ -51,7 +51,7 @@ class _FinancialToggleSwitchState extends State<FinancialToggleSwitch> {
           setState(() {
             showRevenue = isRevenueButton;
           });
-          widget.onChanged(showRevenue); // <-- call the callback
+          widget.onChanged(showRevenue);
         },
         child: Container(
           height: double.infinity,

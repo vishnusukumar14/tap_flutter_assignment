@@ -4,20 +4,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/home/domain/entities/company.dart';
-import '../../features/home/domain/entities/company_detail.dart';
+import '../../domain/entities/company.dart';
+import '../../domain/entities/company_detail.dart';
 
-@injectable
+@lazySingleton
 class ApiService {
   final Dio _dio;
 
-  static const String _baseUrl = 'https://eol122duf9sy4de.m.pipedream.net';
+  static const String _companyListBaseUrl =
+      'https://eol122duf9sy4de.m.pipedream.net';
   static const String _detailBaseUrl =
       'https://eo61q3zd4heiwke.m.pipedream.net';
 
   ApiService(this._dio) {
     _dio.options = BaseOptions(
-      baseUrl: _baseUrl,
+      baseUrl: _companyListBaseUrl,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -29,7 +30,7 @@ class ApiService {
 
     _dio.interceptors.add(
       LogInterceptor(
-        requestBody: true,
+        // requestBody: true,
         responseBody: true,
         logPrint: (object) {
           if (kDebugMode) {
@@ -61,11 +62,9 @@ class ApiService {
 
   Future<CompanyDetail> getCompanyDetail() async {
     try {
-      // Temporarily override baseUrl
       final response = await _dio.get(
         '$_detailBaseUrl/#',
         options: Options(
-          // You can override headers or timeouts here if needed
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

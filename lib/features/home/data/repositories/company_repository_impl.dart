@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:tap_flutter_assignment/features/home/domain/entities/company.dart';
 import 'package:tap_flutter_assignment/features/home/domain/entities/company_detail.dart';
 
-import '../../../../core/service/api_service.dart';
+import '../datasource/remote_api_datasource.dart';
 import '../../domain/repositories/company_repository.dart';
 
 @Injectable(as: RemoteRepository)

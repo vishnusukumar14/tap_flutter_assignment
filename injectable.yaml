@@ -1,0 +1,3 @@
+generate_for:
+  - lib/features/**/data/**
+  - lib/features/**/domain/**
