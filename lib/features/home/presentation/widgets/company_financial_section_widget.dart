@@ -44,6 +44,7 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       // color: Colors.grey[400],
+                      height: 1.5,
                       color: Color(0xFFA3A3A3),
                       letterSpacing: 0.8,
                     ),
@@ -68,18 +69,18 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    '2024 - 2025',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       '2024 - 2025',
+              //       style: TextStyle(
+              //         fontSize: 12,
+              //         color: Colors.grey[400],
+              //         fontWeight: FontWeight.w400,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 24),
               // Chart
               SizedBox(height: 200, child: _buildChart()),
@@ -120,9 +121,9 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                           .substring(0, 1)
                           .toUpperCase(),
                       style: TextStyle(
-                        color: Colors.grey[500],
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
+                        color: Color(0xFFA3A3A3),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 8,
                       ),
                     ),
                   );
@@ -142,9 +143,11 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                   child: Text(
                     _formatValue(value),
                     style: TextStyle(
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.w400,
-                      fontSize: 10,
+                      letterSpacing: 0.8,
+                      height: 1.5,
+                      color: Color(0xFFA3A3A3),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 8,
                     ),
                   ),
                 );

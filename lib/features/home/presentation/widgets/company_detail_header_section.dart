@@ -40,7 +40,6 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildCompanyHeader(),
-        SizedBox(height: 12),
         _buildTabSection(),
         SizedBox(height: 12),
         _buildSelectedTabContent(),

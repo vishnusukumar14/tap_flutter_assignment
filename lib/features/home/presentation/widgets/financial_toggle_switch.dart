@@ -28,6 +28,7 @@ class _FinancialToggleSwitchState extends State<FinancialToggleSwitch> {
     return Container(
       width: 110,
       height: 25,
+      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(16),
@@ -70,9 +71,9 @@ class _FinancialToggleSwitchState extends State<FinancialToggleSwitch> {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Color(0xFF525866).withValues(alpha: 0.06),
                       offset: const Offset(0, 1),
-                      blurRadius: 1,
+                      blurRadius: 2,
                     ),
                   ]
                 : [],

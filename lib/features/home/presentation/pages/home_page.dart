@@ -49,38 +49,17 @@ class _HomePageState extends State<HomePage> {
 
   bool _matchesSearchQuery(Company company, String query) {
     final normalizedQuery = query.toLowerCase().trim();
+    if (normalizedQuery.isEmpty) return true;
+
     final isin = company.isin.toLowerCase();
     final companyName = company.companyName.toLowerCase();
 
-    // Split query into individual words/terms
     final queryTerms = normalizedQuery.split(RegExp(r'\s+'));
 
-    // Check if all terms match either ISIN or company name
-    for (final term in queryTerms) {
-      if (term.isEmpty) continue;
-
-      bool termMatches = false;
-
-      // Check if term matches in ISIN
-      if (isin.contains(term)) {
-        termMatches = true;
-      }
-
-      if (companyName.contains(term)) {
-        termMatches = true;
-      }
-
-      final combined = '$isin $companyName';
-      if (combined.contains(term)) {
-        termMatches = true;
-      }
-
-      if (!termMatches) {
-        return false;
-      }
-    }
-
-    return true;
+    return queryTerms.any((term) {
+      if (term.isEmpty) return false;
+      return isin.contains(term) || companyName.contains(term);
+    });
   }
 
   @override
@@ -179,17 +158,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCompaniesList(CompanyListState state) {
-    // Handle loading state
     if (state is CompanyListLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // Handle error state
     if (state is CompanyListError) {
       return _buildErrorState(state.message);
     }
 
-    // Handle loaded state
     if (state is CompanyListLoaded) {
       final allCompanies = state.companies;
       final companiesToShow = _filterCompanies(allCompanies);
