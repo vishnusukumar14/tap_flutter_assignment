@@ -103,7 +103,7 @@ class _CompanyCardState extends State<CompanyCard>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
             decoration: BoxDecoration(
-              color: const Color(0xFFD97706).withOpacity(0.16),
+              color: const Color(0xFFD97706).withValues(alpha: 0.16),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(

@@ -124,7 +124,7 @@ class _LoadingWidget extends StatelessWidget {
           SizedBox(height: 16),
           Text(
             'Loading company details...',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ],
       ),

@@ -9,80 +9,74 @@ class ProsAndConsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Card(
-        elevation: 0,
-        margin: EdgeInsets.only(bottom: 24),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Colors.grey.shade200, width: 1),
-        ),
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
         color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Title
-              const Text(
-                'Pros and Cons',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Pros section
-              if (pros.isNotEmpty) ...[
-                const Text(
-                  'Pros',
-                  style: TextStyle(
-                    fontSize: 16,
-                    letterSpacing: -0.16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF15803D),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ...pros.map(
-                  (point) => _buildBulletPoint(
-                    point,
-                    icon: Icons.check,
-                    iconColor: Color(0xFF12813D),
-                    iconBackgroundColor: Color(0xFF16A34A).withOpacity(0.12),
-                  ),
-                ),
-              ],
-
-              const SizedBox(height: 34),
-
-              // Cons section
-              if (cons.isNotEmpty) ...[
-                const Text(
-                  'Cons',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFB45309),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ...cons.map(
-                  (point) => _buildBulletPoint(
-                    point,
-                    icon: FontAwesomeIcons.exclamation,
-                    iconColor: Color(0xFFD97706),
-                    iconBackgroundColor: Color(0xFFD97706).withOpacity(0.12),
-                  ),
-                ),
-              ],
-              // const SizedBox(height: 34),
-            ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title
+          const Text(
+            'Pros and Cons',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0,
+            ),
           ),
-        ),
+          const SizedBox(height: 24),
+
+          // Pros section
+          if (pros.isNotEmpty) ...[
+            const Text(
+              'Pros',
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: -0.16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF15803D),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ...pros.map(
+              (point) => _buildBulletPoint(
+                point,
+                icon: Icons.check,
+                iconColor: Color(0xFF12813D),
+                iconBackgroundColor: Color(0xFF16A34A).withValues(alpha: 0.12),
+              ),
+            ),
+          ],
+
+          const SizedBox(height: 34),
+
+          // Cons section
+          if (cons.isNotEmpty) ...[
+            const Text(
+              'Cons',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFFB45309),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ...cons.map(
+              (point) => _buildBulletPoint(
+                point,
+                icon: FontAwesomeIcons.exclamation,
+                iconColor: Color(0xFFD97706),
+                iconBackgroundColor: Color(0xFFD97706).withValues(alpha: 0.12),
+              ),
+            ),
+          ],
+          // const SizedBox(height: 34),
+        ],
       ),
     );
   }

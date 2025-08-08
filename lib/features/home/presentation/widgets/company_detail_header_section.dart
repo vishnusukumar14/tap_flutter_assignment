@@ -99,8 +99,7 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
           ),
           const SizedBox(height: 16),
           Wrap(
-            spacing: 12,
-            runSpacing: 8,
+            spacing: 8,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -108,7 +107,7 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Color(0xFF2563EB).withOpacity(0.12),
+                  color: Color(0xFF2563EB).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -126,7 +125,7 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Color(0xFF059669).withOpacity(0.08),
+                  color: Color(0xFF059669).withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -179,9 +178,12 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
       case 0:
         return _buildISINAnalysisTab();
       case 1:
-        return ProsAndConsSection(
-          pros: widget.companyDetail.prosAndCons.pros,
-          cons: widget.companyDetail.prosAndCons.cons,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: ProsAndConsSection(
+            pros: widget.companyDetail.prosAndCons.pros,
+            cons: widget.companyDetail.prosAndCons.cons,
+          ),
         );
       default:
         return _buildISINAnalysisTab();
@@ -189,13 +191,16 @@ class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
   }
 
   Widget _buildISINAnalysisTab() {
-    return Column(
-      children: [
-        CompanyFinancialsSection(companyDetail: widget.companyDetail),
-        const SizedBox(height: 24),
-        IssuerDetailsSection(companyDetail: widget.companyDetail),
-        const SizedBox(height: 20),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        children: [
+          CompanyFinancialsSection(companyDetail: widget.companyDetail),
+          const SizedBox(height: 24),
+          IssuerDetailsSection(companyDetail: widget.companyDetail),
+          const SizedBox(height: 120),
+        ],
+      ),
     );
   }
 }
