@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../domain/entities/company_detail.dart';
 import 'financial_toggle_switch.dart';
@@ -50,7 +51,15 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
 
                   FinancialToggleSwitch(
                     initialShowRevenue: false,
-                    onChanged: (bool isRevenue) {
+                    onChanged: (bool isRevenue) async {
+                      if (await Vibration.hasVibrator() &&
+                          await Vibration.hasAmplitudeControl()) {
+                        Vibration.vibrate(
+                          // amplitude: 1/,
+                          duration: 12,
+                          sharpness: 0.04,
+                        );
+                      }
                       setState(() {
                         showRevenue = isRevenue;
                       });
@@ -59,7 +68,6 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
                 ],
               ),
               const SizedBox(height: 8),
-              // Year label
               Row(
                 children: [
                   Text(
@@ -76,35 +84,6 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
               // Chart
               SizedBox(height: 200, child: _buildChart()),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildToggleButton(String text, bool isSelected) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          showRevenue = text == 'Revenue';
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue[600] : Colors.grey[50],
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-            color: isSelected ? Colors.blue[600]! : Colors.grey[200]!,
-            width: 1,
-          ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 11,
-            color: isSelected ? Colors.white : Colors.grey[600],
-            fontWeight: FontWeight.w500,
           ),
         ),
       ),
