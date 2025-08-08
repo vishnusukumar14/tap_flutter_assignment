@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tap_flutter_assignment/features/home/domain/entities/bond.dart';
-import 'package:tap_flutter_assignment/features/home/presentation/cubit/bond_cubit.dart';
-import 'package:tap_flutter_assignment/features/home/presentation/cubit/bond_list_state.dart';
+import 'package:tap_flutter_assignment/features/home/domain/entities/company.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/cubit/company_list_cubit.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/cubit/company_list_state.dart';
 import 'package:tap_flutter_assignment/features/home/presentation/pages/company_detail_page.dart';
 
-import '../widgets/bond_card.dart';
+import '../widgets/company_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  List<Bond> _filteredBonds = [];
   String _searchQuery = '';
 
   @override
@@ -38,20 +37,20 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  List<Bond> _filterBonds(List<Bond> allBonds) {
+  List<Company> _filterCompanies(List<Company> allCompanies) {
     if (_searchQuery.isEmpty) {
-      return allBonds;
+      return allCompanies;
     } else {
-      return allBonds.where((bond) {
-        return _matchesSearchQuery(bond, _searchQuery);
+      return allCompanies.where((company) {
+        return _matchesSearchQuery(company, _searchQuery);
       }).toList();
     }
   }
 
-  bool _matchesSearchQuery(Bond bond, String query) {
+  bool _matchesSearchQuery(Company company, String query) {
     final normalizedQuery = query.toLowerCase().trim();
-    final isin = bond.isin.toLowerCase();
-    final companyName = bond.companyName.toLowerCase();
+    final isin = company.isin.toLowerCase();
+    final companyName = company.companyName.toLowerCase();
 
     // Split query into individual words/terms
     final queryTerms = normalizedQuery.split(RegExp(r'\s+'));
@@ -114,15 +113,21 @@ class _HomePageState extends State<HomePage> {
                 height: 42,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: const Color(0xFFE5E7EB),
+                    width: 0.5,
+                  ),
                 ),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search by Issuer Name or ISIN',
                     hintStyle: TextStyle(
-                      color: Colors.grey[500],
+                      letterSpacing: 0,
+                      height: 1.5,
+                      fontFamily: "Inter",
+                      color: Colors.grey[400],
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),
@@ -160,11 +165,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            // Scrollable content section
             SizedBox(
-              height: 216,
-              child: BlocBuilder<BondCubit, BondListState>(
-                builder: (context, state) => _buildBondsList(state),
+              height: 217.2,
+              child: BlocBuilder<CompanyListCubit, CompanyListState>(
+                builder: (context, state) => _buildCompaniesList(state),
               ),
             ),
             SizedBox(height: 4),
@@ -174,30 +178,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBondsList(BondListState state) {
+  Widget _buildCompaniesList(CompanyListState state) {
     // Handle loading state
-    if (state is BondListLoading) {
+    if (state is CompanyListLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     // Handle error state
-    if (state is BondListError) {
+    if (state is CompanyListError) {
       return _buildErrorState(state.message);
     }
 
     // Handle loaded state
-    if (state is BondListLoaded) {
-      final allBonds = state.bonds;
-      final bondsToShow = _filterBonds(allBonds);
+    if (state is CompanyListLoaded) {
+      final allCompanies = state.companies;
+      final companiesToShow = _filterCompanies(allCompanies);
 
-      if (bondsToShow.isEmpty && _searchQuery.isNotEmpty) {
+      if (companiesToShow.isEmpty && _searchQuery.isNotEmpty) {
         return _buildEmptySearchState();
       }
 
-      if (bondsToShow.isEmpty) {
+      if (companiesToShow.isEmpty) {
         return const Center(
           child: Text(
-            'No bonds available',
+            'No companies available',
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         );
@@ -208,22 +212,23 @@ class _HomePageState extends State<HomePage> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.shade200, width: 1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.shade200, width: 0.5),
           ),
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: bondsToShow.length,
+            itemCount: companiesToShow.length,
             itemBuilder: (context, index) {
-              final bond = bondsToShow[index];
-              return SearchableBondCard(
-                bond: bond,
+              final company = companiesToShow[index];
+              return CompanyCard(
+                company: company,
                 searchQuery: _searchQuery,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BondDetailPage(bondId: bond.isin),
+                      builder: (context) =>
+                          CompanyDetailPage(companyId: company.isin),
                     ),
                   );
                 },
@@ -234,7 +239,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Handle initial/unknown state
     return const SizedBox.shrink();
   }
 
@@ -287,7 +291,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              context.read<BondCubit>().loadBonds();
+              context.read<CompanyListCubit>().loadCompanies();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF007AFF),
@@ -303,12 +307,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class HighlightMatch {
-  final int start;
-  final int end;
-  final String text;
-
-  HighlightMatch(this.start, this.end, this.text);
 }

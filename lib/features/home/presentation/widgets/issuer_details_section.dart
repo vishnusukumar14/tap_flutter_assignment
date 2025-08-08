@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../domain/entities/bond_detail.dart';
+import '../../domain/entities/company_detail.dart';
 
 class IssuerDetailsSection extends StatelessWidget {
-  final BondDetail bondDetail;
+  final CompanyDetail companyDetail;
 
-  const IssuerDetailsSection({super.key, required this.bondDetail});
+  const IssuerDetailsSection({super.key, required this.companyDetail});
 
   Widget _buildDetailItem(String label, String value) {
     return Container(
@@ -79,30 +79,33 @@ class IssuerDetailsSection extends StatelessWidget {
             const SizedBox(height: 16),
             _buildDetailItem(
               'Issuer Name',
-              bondDetail.issuerDetails.issuerName,
+              companyDetail.issuerDetails.issuerName,
             ),
             _buildDetailItem(
               'Type of Issuer',
-              bondDetail.issuerDetails.typeOfIssuer,
+              companyDetail.issuerDetails.typeOfIssuer,
             ),
-            _buildDetailItem('Sector', bondDetail.issuerDetails.sector),
-            _buildDetailItem('Industry', bondDetail.issuerDetails.industry),
+            _buildDetailItem('Sector', companyDetail.issuerDetails.sector),
+            _buildDetailItem('Industry', companyDetail.issuerDetails.industry),
             _buildDetailItem(
               'Issuer Nature',
-              bondDetail.issuerDetails.issuerNature,
+              companyDetail.issuerDetails.issuerNature,
             ),
             _buildDetailItem(
               'Corporate Identity Number (CIN)',
-              bondDetail.issuerDetails.cin,
+              companyDetail.issuerDetails.cin,
             ),
             _buildDetailItem(
               'Name of the Lead Manager',
-              bondDetail.issuerDetails.leadManager,
+              companyDetail.issuerDetails.leadManager,
             ),
-            _buildDetailItem('Registrar', bondDetail.issuerDetails.registrar),
+            _buildDetailItem(
+              'Registrar',
+              companyDetail.issuerDetails.registrar,
+            ),
             _buildDetailItem(
               'Name of Debenture Trustee',
-              bondDetail.issuerDetails.debentureTrustee,
+              companyDetail.issuerDetails.debentureTrustee,
             ),
           ],
         ),

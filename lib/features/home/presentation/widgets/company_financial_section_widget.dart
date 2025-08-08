@@ -1,13 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/bond_detail.dart';
+import '../../domain/entities/company_detail.dart';
 import 'financial_toggle_switch.dart';
 
 class CompanyFinancialsSection extends StatefulWidget {
-  final BondDetail bondDetail;
+  final CompanyDetail companyDetail;
 
-  const CompanyFinancialsSection({super.key, required this.bondDetail});
+  const CompanyFinancialsSection({super.key, required this.companyDetail});
 
   @override
   State<CompanyFinancialsSection> createState() =>
@@ -112,8 +112,8 @@ class _CompanyFinancialsSectionState extends State<CompanyFinancialsSection> {
   }
 
   Widget _buildChart() {
-    final revenueData = widget.bondDetail.financials.revenue;
-    final ebitdaData = widget.bondDetail.financials.ebitda;
+    final revenueData = widget.companyDetail.financials.revenue;
+    final ebitdaData = widget.companyDetail.financials.ebitda;
 
     final maxRevenue = _getMaxValue(revenueData);
     final maxEbitda = _getMaxValue(ebitdaData);

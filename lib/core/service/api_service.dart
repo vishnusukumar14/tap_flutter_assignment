@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/home/domain/entities/bond.dart';
-import '../../features/home/domain/entities/bond_detail.dart';
+import '../../features/home/domain/entities/company.dart';
+import '../../features/home/domain/entities/company_detail.dart';
 
 @injectable
 class ApiService {
@@ -40,24 +40,26 @@ class ApiService {
     );
   }
 
-  Future<List<Bond>> getCompanies() async {
+  Future<List<Company>> getCompanies() async {
     try {
       final response = await _dio.get('/#');
 
       final List<dynamic> companiesJson = response.data['data'];
-      return companiesJson.map((json) => Bond.fromJson(json)).toList();
+      return companiesJson.map((json) => Company.fromJson(json)).toList();
     } on DioException catch (e) {
       if (e.response != null) {
-        throw HttpException('Failed to load bonds: ${e.response!.statusCode}');
+        throw HttpException(
+          'Failed to load companies: ${e.response!.statusCode}',
+        );
       } else {
-        throw Exception('Error fetching bond lists: ${e.message}');
+        throw Exception('Error fetching company lists: ${e.message}');
       }
     } catch (e) {
-      throw Exception('Error fetching bond lists: $e');
+      throw Exception('Error fetching company lists: $e');
     }
   }
 
-  Future<BondDetail> getBondDetails() async {
+  Future<CompanyDetail> getCompanyDetail() async {
     try {
       // Temporarily override baseUrl
       final response = await _dio.get(
@@ -71,9 +73,9 @@ class ApiService {
         ),
       );
 
-      return BondDetail.fromJson(response.data);
+      return CompanyDetail.fromJson(response.data);
     } on DioException catch (e) {
-      throw Exception('Error fetching bond detail: ${e.message}');
+      throw Exception('Error fetching company detail: ${e.message}');
     }
   }
 }

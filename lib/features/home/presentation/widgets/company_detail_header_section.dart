@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:tap_flutter_assignment/features/home/presentation/widgets/company_financial_section_widget.dart';
 import 'package:tap_flutter_assignment/features/home/presentation/widgets/pros_and_cons_section.dart';
 
-import '../../domain/entities/bond_detail.dart';
+import '../../domain/entities/company_detail.dart';
 import 'issuer_details_section.dart';
 
-class BondDetailHeaderSection extends StatefulWidget {
-  final BondDetail bondDetail;
+class CompanyDetailHeaderSection extends StatefulWidget {
+  final CompanyDetail companyDetail;
 
-  const BondDetailHeaderSection({super.key, required this.bondDetail});
+  const CompanyDetailHeaderSection({super.key, required this.companyDetail});
 
   @override
-  State<BondDetailHeaderSection> createState() =>
-      _BondDetailHeaderSectionState();
+  State<CompanyDetailHeaderSection> createState() =>
+      _CompanyDetailHeaderSectionState();
 }
 
-class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
+class _CompanyDetailHeaderSectionState extends State<CompanyDetailHeaderSection>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -68,7 +68,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.network(
-                widget.bondDetail.logo,
+                widget.companyDetail.logo,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
@@ -81,7 +81,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
           ),
           const SizedBox(height: 18),
           Text(
-            widget.bondDetail.companyName,
+            widget.companyDetail.companyName,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -90,7 +90,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
           ),
           const SizedBox(height: 12),
           Text(
-            widget.bondDetail.description,
+            widget.companyDetail.description,
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -113,7 +113,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  'ISIN: ${widget.bondDetail.isin}',
+                  'ISIN: ${widget.companyDetail.isin}',
                   style: TextStyle(
                     fontSize: 10,
                     color: Color(0xFF2563EB),
@@ -131,7 +131,7 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  widget.bondDetail.status.toUpperCase(),
+                  widget.companyDetail.status.toUpperCase(),
                   style: TextStyle(
                     fontSize: 10,
                     color: Color(0xFF059669),
@@ -181,8 +181,8 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
         return _buildISINAnalysisTab();
       case 1:
         return ProsAndConsSection(
-          pros: widget.bondDetail.prosAndCons.pros,
-          cons: widget.bondDetail.prosAndCons.cons,
+          pros: widget.companyDetail.prosAndCons.pros,
+          cons: widget.companyDetail.prosAndCons.cons,
         );
       default:
         return _buildISINAnalysisTab();
@@ -192,9 +192,9 @@ class _BondDetailHeaderSectionState extends State<BondDetailHeaderSection>
   Widget _buildISINAnalysisTab() {
     return Column(
       children: [
-        CompanyFinancialsSection(bondDetail: widget.bondDetail),
+        CompanyFinancialsSection(companyDetail: widget.companyDetail),
         const SizedBox(height: 24),
-        IssuerDetailsSection(bondDetail: widget.bondDetail),
+        IssuerDetailsSection(companyDetail: widget.companyDetail),
         const SizedBox(height: 20),
       ],
     );

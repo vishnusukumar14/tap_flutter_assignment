@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/bond.dart';
-import '../pages/home_page.dart';
+import '../../domain/entities/company.dart';
 
-class SearchableBondCard extends StatefulWidget {
-  final Bond bond;
+class HighlightMatch {
+  final int start;
+  final int end;
+  final String text;
+
+  HighlightMatch(this.start, this.end, this.text);
+}
+
+class CompanyCard extends StatefulWidget {
+  final Company company;
   final String searchQuery;
   final VoidCallback onTap;
 
-  const SearchableBondCard({
+  const CompanyCard({
     super.key,
-    required this.bond,
+    required this.company,
     required this.searchQuery,
     required this.onTap,
   });
 
   @override
-  State<SearchableBondCard> createState() => _SearchableBondCardState();
+  State<CompanyCard> createState() => _CompanyCardState();
 }
 
-class _SearchableBondCardState extends State<SearchableBondCard>
+class _CompanyCardState extends State<CompanyCard>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
@@ -154,12 +161,12 @@ class _SearchableBondCardState extends State<SearchableBondCard>
           height: 40,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300, width: 0.6),
+            border: Border.all(color: Colors.grey.shade200, width: 0.5),
             shape: BoxShape.circle,
           ),
           child: ClipOval(
             child: Image.network(
-              widget.bond.logo,
+              widget.company.logo,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -178,7 +185,10 @@ class _SearchableBondCardState extends State<SearchableBondCard>
           children: [
             Flexible(
               child: _buildHighlightedText(
-                widget.bond.isin.substring(0, widget.bond.isin.length - 4),
+                widget.company.isin.substring(
+                  0,
+                  widget.company.isin.length - 4,
+                ),
                 TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -188,7 +198,7 @@ class _SearchableBondCardState extends State<SearchableBondCard>
             ),
             Flexible(
               child: _buildHighlightedText(
-                widget.bond.isin.substring(widget.bond.isin.length - 4),
+                widget.company.isin.substring(widget.company.isin.length - 4),
                 TextStyle(
                   color: Colors.grey[800],
                   fontSize: 14,
@@ -204,18 +214,22 @@ class _SearchableBondCardState extends State<SearchableBondCard>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${widget.bond.rating} • ",
+                "${widget.company.rating} • ",
                 style: TextStyle(
                   fontSize: 10,
+                  fontFamily: "Inter",
                   color: Colors.grey[400],
-                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               Expanded(
                 child: _buildHighlightedText(
-                  widget.bond.companyName,
+                  widget.company.companyName,
                   TextStyle(
                     fontSize: 10,
+                    fontFamily: "Inter",
+                    letterSpacing: 0,
                     color: Colors.grey[400],
                     fontWeight: FontWeight.w400,
                   ),
@@ -227,7 +241,7 @@ class _SearchableBondCardState extends State<SearchableBondCard>
         trailing: Icon(
           Icons.arrow_forward_ios,
           size: 14,
-          color: Colors.grey[400],
+          color: Colors.blue[700],
         ),
         onTap: widget.onTap,
       ),

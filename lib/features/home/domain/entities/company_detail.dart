@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'bond_detail.freezed.dart';
-part 'bond_detail.g.dart';
+part 'company_detail.freezed.dart';
+part 'company_detail.g.dart';
 
 @freezed
-class BondDetail with _$BondDetail {
-  const factory BondDetail({
+class CompanyDetail with _$CompanyDetail {
+  const factory CompanyDetail({
     required String logo,
     @JsonKey(name: 'company_name') required String companyName,
     required String description,
@@ -14,10 +14,10 @@ class BondDetail with _$BondDetail {
     @JsonKey(name: 'pros_and_cons') required ProsAndCons prosAndCons,
     required Financials financials,
     @JsonKey(name: 'issuer_details') required IssuerDetails issuerDetails,
-  }) = _BondDetail;
+  }) = _CompanyDetail;
 
-  factory BondDetail.fromJson(Map<String, dynamic> json) =>
-      _$BondDetailFromJson(json);
+  factory CompanyDetail.fromJson(Map<String, dynamic> json) =>
+      _$CompanyDetailFromJson(json);
 }
 
 @freezed

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tap_flutter_assignment/features/home/presentation/cubit/bond_cubit.dart';
+import 'package:tap_flutter_assignment/features/home/presentation/cubit/company_list_cubit.dart';
 
 import 'core/di/injection.dart';
 import 'features/home/presentation/pages/home_page.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: BlocProvider(
-        create: (context) => getIt<BondCubit>()..loadBonds(),
+        create: (context) => getIt<CompanyListCubit>()..loadCompanies(),
         child: const HomePage(),
       ),
     );

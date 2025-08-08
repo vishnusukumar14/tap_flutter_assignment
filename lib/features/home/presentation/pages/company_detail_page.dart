@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/injection.dart';
-import '../cubit/bond_detail_cubit.dart';
-import '../cubit/bond_detail_state.dart';
-import '../widgets/bond_detail_header_section.dart';
+import '../cubit/company_detail_cubit.dart';
+import '../cubit/company_detail_state.dart';
+import '../widgets/company_detail_header_section.dart';
 import '../widgets/error_widget.dart';
 
-class BondDetailPage extends StatelessWidget {
-  final String bondId;
+class CompanyDetailPage extends StatelessWidget {
+  final String companyId;
 
-  const BondDetailPage({super.key, required this.bondId});
+  const CompanyDetailPage({super.key, required this.companyId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<BondDetailCubit>()..loadBondDetail(),
-      child: BondDetailView(bondId: bondId),
+      create: (_) => getIt<CompanyDetailCubit>()..loadCompanyDetail(),
+      child: CompanyDetailView(companyId: companyId),
     );
   }
 }
 
-class BondDetailView extends StatelessWidget {
-  final String bondId;
+class CompanyDetailView extends StatelessWidget {
+  final String companyId;
 
-  const BondDetailView({super.key, required this.bondId});
+  const CompanyDetailView({super.key, required this.companyId});
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +37,12 @@ class BondDetailView extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: BlocConsumer<BondDetailCubit, BondDetailState>(
+      body: BlocConsumer<CompanyDetailCubit, CompanyDetailState>(
         listener: (context, state) {},
         builder: (context, state) {
           return RefreshIndicator(
             onRefresh: () =>
-                context.read<BondDetailCubit>().refreshBondDetail(),
+                context.read<CompanyDetailCubit>().refreshCompanyDetail(),
             child: _buildBody(context, state),
           );
         },
@@ -50,45 +50,53 @@ class BondDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, BondDetailState state) {
-    if (state is BondDetailLoading) {
+  Widget _buildBody(BuildContext context, CompanyDetailState state) {
+    if (state is CompanyDetailLoading) {
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(color: Colors.black),
+            ),
             SizedBox(height: 16),
-            Text('Loading bond details...'),
+            Text(
+              'Loading company details...',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
           ],
         ),
       );
     }
 
-    if (state is BondDetailLoaded || state is BondDetailRefreshing) {
-      final bondDetail = state is BondDetailLoaded
-          ? state.bondDetail
-          : (state as BondDetailRefreshing).previousData;
+    if (state is CompanyDetailLoaded || state is CompanyDetailRefreshing) {
+      final companyDetail = state is CompanyDetailLoaded
+          ? state.companyDetail
+          : (state as CompanyDetailRefreshing).previousData;
 
       return Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: BondDetailHeaderSection(bondDetail: bondDetail),
+              child: CompanyDetailHeaderSection(companyDetail: companyDetail),
             ),
           ),
         ],
       );
     }
 
-    if (state is BondDetailError) {
+    if (state is CompanyDetailError) {
       return SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: SizedBox(
           height: MediaQuery.of(context).size.height - 200,
           child: CustomErrorWidget(
             error: state.message,
-            onRetry: () => context.read<BondDetailCubit>().loadBondDetail(),
+            onRetry: () =>
+                context.read<CompanyDetailCubit>().loadCompanyDetail(),
           ),
         ),
       );
