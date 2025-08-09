@@ -3,12 +3,7 @@
 
 ## Video Demo
 
-A short video demonstrating the app’s UI and key features including:
-
-- HomePage loading states (loading, loaded, error)
-- Search functionality with real-time results
-- Retry button behavior on error state
-- Smooth transitions and interactions
+A short video demonstrating the app’s UI and key features.
 
 You can watch the video here:
 
